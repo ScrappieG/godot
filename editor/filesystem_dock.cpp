@@ -1292,14 +1292,15 @@ void FileSystemDock::_tree_activate_file() {
 		TreeItem *parent = selected->get_parent();
 		bool is_favorite = parent != nullptr && parent->get_metadata(0) == "Favorites";
 
-		if ((!is_favorite && file_path.ends_with("/")) || file_path == "Favorites") {
+		if ((!is_favorite && file_path.ends_with("/")) || (file_path == "Favorites" && file_path.ends_with("/"))) {
 			bool collapsed = selected->is_collapsed();
 			selected->set_collapsed(!collapsed);
-		}else if(is_favorite && file_path.ends_with("/")) {
+		}
+		if(is_favorite && file_path.ends_with("/")) {
 			_navigate_to_path(file_path, true);
 		}
 		else if(is_favorite && !file_path.ends_with("/")){
-			_select_file(file_path, true, false);
+			_select_file(file_path, true, true);
 		}
 		 else {
 			_select_file(file_path, is_favorite && !file_path.ends_with("/"), false);
